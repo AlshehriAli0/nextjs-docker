@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "docker:start": "docker build -t my-app . && docker run -p 3000:3000 my-app"
   },
   "dependencies": {
     "react": "^18",
