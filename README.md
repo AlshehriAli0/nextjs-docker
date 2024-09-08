@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Docker Template
+
+This repository provides a Docker setup for a Next.js application, using `pnpm` for package management. It includes a multi-stage Dockerfile to build and run a Next.js application efficiently.
+
+## Features
+
+- **Multi-stage Docker Build**: Reduces final image size and improves security by separating the build and runtime environments.
+- **`pnpm` Package Management**: Uses `pnpm` for faster, more efficient dependency management.
+- **Optional Public Directory**: Handles the optional presence of the `public` directory gracefully.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Ensure you have the following installed on your local machine:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [Docker](https://docs.docker.com/get-docker/)
+- [pnpm](https://pnpm.io/)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Clone the Repository**
 
-## Learn More
+   ```bash
+   git clone https://github.com/your-username/nextjs-docker.git
+   cd nextjs-docker
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. **Install Dependencies**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   If you haven't already installed dependencies using `pnpm`, you can do so with:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   pnpm install
+   ```
 
-## Deploy on Vercel
+### Docker Setup
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Build the Docker Image**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   To build the Docker image, use the following command:
+
+   ```bash
+   pnpm run docker:build
+   ```
+
+2. **Run the Docker Container**
+
+   To build and run the Docker container, use:
+
+   ```bash
+   pnpm run docker:start
+   ```
+
+   This will map port 3000 from the container to port 3000 on your host machine.
+
+### Dockerfile Explanation
+
+- **Base Image**: Uses Node.js 20 on Alpine Linux.
+- **Builder Stage**:
+  - Sets up the working directory.
+  - Copies `package.json` and `pnpm-lock.yaml` and installs dependencies using `pnpm`.
+  - Copies the source code from `src` directory and builds the Next.js application.
+- **Runner Stage**:
+  - Sets up a lightweight runtime environment.
+  - Creates a system user and group for security.
+  - Copies the build artifacts and necessary files from the builder stage.
+  - Runs the Next.js application.
+
+### Customization
+
+You can customize the Dockerfile for your specific needs by:
+- Adjusting the `COPY` commands if your project structure differs.
+- Adding environment variables for secrets using `ARG`.
+- Modifying `CMD` if you use a different entry point for your application.
+
+### Troubleshooting
+
+- **Missing `public` Directory**: If the `public` directory is not present, Docker will proceed without it, and no build errors will occur.
+- **Docker Errors**: Ensure Docker and `pnpm` are correctly installed and updated.
+
+### Contributing
+
+Feel free to contribute by creating pull requests or opening issues. For significant changes, please discuss them first by opening an issue.
+
+### License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+For more details, check the [Next.js documentation](https://nextjs.org/docs) and [Docker documentation](https://docs.docker.com/).
