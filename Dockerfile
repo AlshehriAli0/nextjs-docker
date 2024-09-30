@@ -28,7 +28,7 @@ ENV NODE_ENV=production
 RUN pnpm run build
 
 # Create a new stage called 'runner' from the 'base' stage
-FROM base as runner
+FROM base AS runner
 
 # Set the working directory inside the container to '/app'
 WORKDIR /app
